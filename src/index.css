@@ -125,4 +125,18 @@ body {
 .resume-preview div,
 .resume-preview li {
   font-size: var(--resume-font-size, 1rem) !important;
+}
+
+/* Inline Editor Visual Feedback */
+.editing-active {
+  outline: 2px solid #3B82F6 !important;
+  outline-offset: 2px !important;
+  border-radius: 4px !important;
+  background-color: rgba(59, 130, 246, 0.05) !important;
+  transition: all 0.2s ease !important;
+}
+
+.editing-active:focus {
+  outline: 2px solid #1D4ED8 !important;
+  background-color: rgba(59, 130, 246, 0.1) !important;
 } 

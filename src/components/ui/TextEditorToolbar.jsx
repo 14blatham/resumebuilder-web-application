@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Bold, Italic, Underline, Undo2, Redo2 } from 'lucide-react';
 
 const fontFamilies = [
@@ -20,48 +21,106 @@ const fontSizes = [
 const TextEditorToolbar = ({ selection, actions, toolbarRef }) => {
   if (!selection.el) return null;
   return (
-    <div
-      ref={toolbarRef}
-      className="fixed z-50 bg-white/90 backdrop-blur-md border border-gray-300 rounded-lg shadow-lg p-2 flex items-center space-x-2"
-      style={{ top: selection.y, left: selection.x, transform: 'translate(-50%, -100%)' }}
-    >
+    <AnimatePresence>
+      <motion.div
+        ref={toolbarRef}
+        className="fixed z-50 glass-effect border border-white/20 rounded-lg shadow-lg p-3 flex items-center space-x-3"
+        style={{ top: selection.y, left: selection.x, transform: 'translate(-50%, -100%)' }}
+        initial={{ opacity: 0, scale: 0.8, y: 10 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.8, y: 10 }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
+      >
       {/* Font family */}
       <select
-        className="text-sm px-2 py-1 rounded border border-gray-300 focus:outline-none"
+        className="text-sm px-3 py-2 rounded-lg bg-white/20 backdrop-blur-sm border border-white/30 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200"
         defaultValue=""
         onChange={(e) => actions.fontFamily(e.target.value)}
       >
-        <option value="" disabled>Font</option>
+        <option value="" disabled className="text-gray-800">Font</option>
         {fontFamilies.map((f) => (
-          <option key={f.value} value={f.value}>{f.label}</option>
+          <option key={f.value} value={f.value} className="text-gray-800">{f.label}</option>
         ))}
       </select>
 
       {/* Font size */}
       <select
-        className="text-sm px-2 py-1 rounded border border-gray-300 focus:outline-none"
+        className="text-sm px-3 py-2 rounded-lg bg-white/20 backdrop-blur-sm border border-white/30 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200"
         defaultValue=""
         onChange={(e) => actions.fontSize(e.target.value)}
       >
-        <option value="" disabled>Size</option>
+        <option value="" disabled className="text-gray-800">Size</option>
         {fontSizes.map((s) => (
-          <option key={s.value} value={s.value}>{s.label}</option>
+          <option key={s.value} value={s.value} className="text-gray-800">{s.label}</option>
         ))}
       </select>
 
       {/* Color pickers */}
-      <input type="color" onChange={(e) => actions.color(e.target.value)} />
-      <input type="color" onChange={(e) => actions.bgColor(e.target.value)} />
+      <div className="flex space-x-2">
+        <input 
+          type="color" 
+          onChange={(e) => actions.color(e.target.value)}
+          className="w-8 h-8 rounded-lg border border-white/30 cursor-pointer"
+          title="Text Color"
+        />
+        <input 
+          type="color" 
+          onChange={(e) => actions.bgColor(e.target.value)}
+          className="w-8 h-8 rounded-lg border border-white/30 cursor-pointer"
+          title="Background Color"
+        />
+      </div>
 
       {/* Bold / Italic / Underline */}
-      <button className="p-1 hover:bg-gray-200 rounded" onClick={actions.bold}><Bold className="w-4 h-4" /></button>
-      <button className="p-1 hover:bg-gray-200 rounded" onClick={actions.italic}><Italic className="w-4 h-4" /></button>
-      <button className="p-1 hover:bg-gray-200 rounded" onClick={actions.underline}><Underline className="w-4 h-4" /></button>
+      <motion.button 
+        className="p-2 hover:bg-white/20 rounded-lg transition-all duration-200 text-white hover:text-blue-300"
+        onClick={actions.bold}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        title="Bold"
+      >
+        <Bold className="w-4 h-4" />
+      </motion.button>
+      <motion.button 
+        className="p-2 hover:bg-white/20 rounded-lg transition-all duration-200 text-white hover:text-blue-300"
+        onClick={actions.italic}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        title="Italic"
+      >
+        <Italic className="w-4 h-4" />
+      </motion.button>
+      <motion.button 
+        className="p-2 hover:bg-white/20 rounded-lg transition-all duration-200 text-white hover:text-blue-300"
+        onClick={actions.underline}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        title="Underline"
+      >
+        <Underline className="w-4 h-4" />
+      </motion.button>
 
       {/* Undo / Redo */}
-      <button className="p-1 hover:bg-gray-200 rounded" onClick={actions.undo}><Undo2 className="w-4 h-4" /></button>
-      <button className="p-1 hover:bg-gray-200 rounded" onClick={actions.redo}><Redo2 className="w-4 h-4" /></button>
-    </div>
+      <motion.button 
+        className="p-2 hover:bg-white/20 rounded-lg transition-all duration-200 text-white hover:text-blue-300"
+        onClick={actions.undo}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        title="Undo"
+      >
+        <Undo2 className="w-4 h-4" />
+      </motion.button>
+      <motion.button 
+        className="p-2 hover:bg-white/20 rounded-lg transition-all duration-200 text-white hover:text-blue-300"
+        onClick={actions.redo}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        title="Redo"
+      >
+        <Redo2 className="w-4 h-4" />
+      </motion.button>
+      </motion.div>
+    </AnimatePresence>
   );
 };
 
