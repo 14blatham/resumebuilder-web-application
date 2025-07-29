@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Globe, Linkedin, Github, Calendar } from 'lucide-react';
 import ModernTemplate from './templates/ModernTemplate';
 import ClassicTemplate from './templates/ClassicTemplate';
 import CreativeTemplate from './templates/CreativeTemplate';
+import useTextEditor from '../hooks/useTextEditor';
+import TextEditorToolbar from './ui/TextEditorToolbar';
 
 const ResumePreview = ({ data, onInlineEdit }) => {
   const {
@@ -28,6 +30,9 @@ const ResumePreview = ({ data, onInlineEdit }) => {
       showIcons: true
     }
   } = data || {};
+
+  const previewRef = useRef(null);
+  const { selection, toolbarRef, actions } = useTextEditor(previewRef);
 
   // Helper function to format date
   const formatDate = (dateString) => {
@@ -163,6 +168,7 @@ const ResumePreview = ({ data, onInlineEdit }) => {
       className="w-full"
     >
       <div 
+        ref={previewRef}
         className="w-full bg-white rounded-lg shadow-lg overflow-hidden resume-preview"
         style={{ 
           backgroundColor: colors.background,
@@ -171,7 +177,6 @@ const ResumePreview = ({ data, onInlineEdit }) => {
           fontSize: settings.fontSize === 'small' ? '0.875rem' : 
                    settings.fontSize === 'large' ? '1.125rem' : 
                    settings.fontSize === 'xl' ? '1.25rem' : '1rem',
-          // Ensure all child elements inherit the font
           '--resume-font-family': settings.fontFamily,
           '--resume-font-size': settings.fontSize === 'small' ? '0.875rem' : 
                                settings.fontSize === 'large' ? '1.125rem' : 
@@ -180,7 +185,9 @@ const ResumePreview = ({ data, onInlineEdit }) => {
       >
         {renderTemplate()}
       </div>
-      
+
+      <TextEditorToolbar selection={selection} actions={actions} toolbarRef={toolbarRef} />
+
       {/* Preview Footer */}
       <div className="mt-4 text-center">
         <p className="text-white/60 text-xs">
