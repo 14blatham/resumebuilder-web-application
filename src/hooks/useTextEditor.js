@@ -8,7 +8,10 @@ const useTextEditor = (containerRef) => {
   const [selection, setSelection] = useState({ el: null, x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const [dragPosition, setDragPosition] = useState({ x: 0, y: 0 });
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const toolbarRef = useRef(null);
+  const animationFrameRef = useRef(null);
 
   // Helper: hide toolbar & disable editing
   const clearSelection = useCallback(() => {
@@ -116,38 +119,75 @@ const useTextEditor = (containerRef) => {
   // Drag functionality
   const handleMouseDown = useCallback((e) => {
     if (toolbarRef.current && toolbarRef.current.contains(e.target)) {
-      setIsDragging(true);
       const rect = toolbarRef.current.getBoundingClientRect();
-      setDragOffset({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top
-      });
+      const offsetX = e.clientX - rect.left;
+      const offsetY = e.clientY - rect.top;
+      
+      setDragStart({ x: e.clientX, y: e.clientY });
+      setDragOffset({ x: offsetX, y: offsetY });
+      setDragPosition({ x: 0, y: 0 }); // Reset drag position
+      setIsDragging(true);
       e.preventDefault();
     }
   }, []);
 
   const handleMouseMove = useCallback((e) => {
     if (isDragging && toolbarRef.current) {
-      const newX = e.clientX - dragOffset.x;
-      const newY = e.clientY - dragOffset.y;
+      // Calculate drag distance for threshold
+      const dragDistance = Math.sqrt(
+        Math.pow(e.clientX - dragStart.x, 2) + 
+        Math.pow(e.clientY - dragStart.y, 2)
+      );
       
-      // Keep toolbar within viewport bounds
-      const maxX = window.innerWidth - toolbarRef.current.offsetWidth;
-      const maxY = window.innerHeight - toolbarRef.current.offsetHeight;
+      // Only start dragging after threshold (5px)
+      if (dragDistance < 5) return;
       
-      const clampedX = Math.max(0, Math.min(newX, maxX));
-      const clampedY = Math.max(0, Math.min(newY, maxY));
+      // Cancel any pending animation frame
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
       
-      setSelection(prev => ({
-        ...prev,
-        x: clampedX + toolbarRef.current.offsetWidth / 2,
-        y: clampedY + toolbarRef.current.offsetHeight
-      }));
+      // Use requestAnimationFrame for smooth updates
+      animationFrameRef.current = requestAnimationFrame(() => {
+        const deltaX = e.clientX - dragStart.x;
+        const deltaY = e.clientY - dragStart.y;
+        
+        // Calculate new position relative to original position
+        const newX = selection.x + deltaX;
+        const newY = selection.y;
+        
+        // Keep toolbar within viewport bounds
+        const maxX = window.innerWidth - toolbarRef.current.offsetWidth;
+        const maxY = window.innerHeight - toolbarRef.current.offsetHeight;
+        
+        const clampedX = Math.max(0, Math.min(newX, maxX));
+        const clampedY = Math.max(0, Math.min(newY, maxY));
+        
+        // Update drag position for transform
+        setDragPosition({
+          x: clampedX - selection.x,
+          y: clampedY - selection.y
+        });
+        
+        // Update selection position
+        setSelection(prev => ({
+          ...prev,
+          x: clampedX,
+          y: clampedY
+        }));
+      });
     }
-  }, [isDragging, dragOffset]);
+  }, [isDragging, dragStart, selection.x, selection.y]);
 
   const handleMouseUp = useCallback(() => {
     setIsDragging(false);
+    setDragPosition({ x: 0, y: 0 });
+    
+    // Cancel any pending animation frame
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+    }
   }, []);
 
   // Add drag event listeners
@@ -174,7 +214,8 @@ const useTextEditor = (containerRef) => {
     clearSelection, 
     exportHTML, 
     handleMouseDown,
-    isDragging 
+    isDragging,
+    dragPosition
   };
 };
 

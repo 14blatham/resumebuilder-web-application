@@ -146,4 +146,11 @@ body {
   opacity: 0.8 !important;
   transform: scale(1.02) !important;
   transition: all 0.1s ease !important;
+}
+
+/* GPU acceleration for smooth dragging */
+.toolbar-smooth-drag {
+  transform: translate3d(0, 0, 0) !important;
+  backface-visibility: hidden !important;
+  perspective: 1000px !important;
 } 

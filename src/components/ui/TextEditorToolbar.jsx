@@ -19,18 +19,30 @@ const fontSizes = [
   { label: 'XXL', value: '6' },
 ];
 
-const TextEditorToolbar = ({ selection, actions, toolbarRef, handleMouseDown, isDragging }) => {
+const TextEditorToolbar = ({ selection, actions, toolbarRef, handleMouseDown, isDragging, dragPosition }) => {
   if (!selection.el) return null;
+  
+  // Calculate transform for smooth GPU-accelerated movement
+  const transform = `translate(calc(-50% + ${dragPosition.x}px), calc(-100% + ${dragPosition.y}px))`;
+  
   return (
     <AnimatePresence>
       <motion.div
         ref={toolbarRef}
         className={`fixed z-50 bg-white/95 backdrop-blur-md border border-gray-300 rounded-lg shadow-xl p-3 flex items-center space-x-3 ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
-        style={{ top: selection.y, left: selection.x, transform: 'translate(-50%, -100%)' }}
+        style={{ 
+          top: selection.y, 
+          left: selection.x, 
+          transform: transform,
+          willChange: isDragging ? 'transform' : 'auto'
+        }}
         initial={{ opacity: 0, scale: 0.8, y: 10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.8, y: 10 }}
-        transition={{ duration: 0.2, ease: "easeOut" }}
+        transition={{ 
+          duration: isDragging ? 0 : 0.2, 
+          ease: "easeOut" 
+        }}
         onMouseDown={handleMouseDown}
       >
       {/* Font family */}
