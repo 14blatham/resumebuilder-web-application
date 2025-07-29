@@ -139,4 +139,11 @@ body {
 .editing-active:focus {
   outline: 2px solid #1D4ED8 !important;
   background-color: rgba(59, 130, 246, 0.1) !important;
+}
+
+/* Toolbar drag feedback */
+.toolbar-dragging {
+  opacity: 0.8 !important;
+  transform: scale(1.02) !important;
+  transition: all 0.1s ease !important;
 } 

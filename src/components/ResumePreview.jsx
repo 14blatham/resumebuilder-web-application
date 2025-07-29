@@ -32,7 +32,7 @@ const ResumePreview = ({ data, onInlineEdit }) => {
   } = data || {};
 
   const previewRef = useRef(null);
-  const { selection, toolbarRef, actions } = useTextEditor(previewRef);
+  const { selection, toolbarRef, actions, handleMouseDown, isDragging } = useTextEditor(previewRef);
 
   // Helper function to format date
   const formatDate = (dateString) => {
@@ -186,7 +186,13 @@ const ResumePreview = ({ data, onInlineEdit }) => {
         {renderTemplate()}
       </div>
 
-      <TextEditorToolbar selection={selection} actions={actions} toolbarRef={toolbarRef} />
+      <TextEditorToolbar 
+        selection={selection} 
+        actions={actions} 
+        toolbarRef={toolbarRef} 
+        handleMouseDown={handleMouseDown}
+        isDragging={isDragging}
+      />
 
       {/* Preview Footer */}
       <div className="mt-4 text-center">

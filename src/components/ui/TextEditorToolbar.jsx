@@ -12,24 +12,26 @@ const fontFamilies = [
 ];
 
 const fontSizes = [
-  { label: 'S', value: '2' }, // execCommand fontSize takes 1-7 (approx!)
+  { label: 'S', value: '2' },
   { label: 'M', value: '3' },
   { label: 'L', value: '4' },
   { label: 'XL', value: '5' },
+  { label: 'XXL', value: '6' },
 ];
 
-const TextEditorToolbar = ({ selection, actions, toolbarRef }) => {
+const TextEditorToolbar = ({ selection, actions, toolbarRef, handleMouseDown, isDragging }) => {
   if (!selection.el) return null;
   return (
     <AnimatePresence>
       <motion.div
         ref={toolbarRef}
-        className="fixed z-50 bg-white/95 backdrop-blur-md border border-gray-300 rounded-lg shadow-xl p-3 flex items-center space-x-3"
+        className={`fixed z-50 bg-white/95 backdrop-blur-md border border-gray-300 rounded-lg shadow-xl p-3 flex items-center space-x-3 ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
         style={{ top: selection.y, left: selection.x, transform: 'translate(-50%, -100%)' }}
         initial={{ opacity: 0, scale: 0.8, y: 10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.8, y: 10 }}
         transition={{ duration: 0.2, ease: "easeOut" }}
+        onMouseDown={handleMouseDown}
       >
       {/* Font family */}
       <select

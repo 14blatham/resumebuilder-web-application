@@ -6,6 +6,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
  */
 const useTextEditor = (containerRef) => {
   const [selection, setSelection] = useState({ el: null, x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const toolbarRef = useRef(null);
 
   // Helper: hide toolbar & disable editing
@@ -16,6 +18,7 @@ const useTextEditor = (containerRef) => {
       selection.el.blur();
     }
     setSelection({ el: null, x: 0, y: 0 });
+    setIsDragging(false);
   }, [selection.el]);
 
   // Click handler: activate editing on any text node element
@@ -57,13 +60,17 @@ const useTextEditor = (containerRef) => {
   const exec = (command, value = null) => {
     if (!selection.el) return;
     
+    const el = selection.el;
+    
+    // Ensure the element is focused for execCommand to work
+    el.focus();
+    
     try {
       // Try execCommand first
-      document.execCommand(command, false, value);
+      const success = document.execCommand(command, false, value);
+      if (!success) throw new Error('execCommand failed');
     } catch (_) {
       // Fallback to inline styles
-      const el = selection.el;
-      
       switch (command) {
         case 'foreColor':
           el.style.color = value;
@@ -75,7 +82,9 @@ const useTextEditor = (containerRef) => {
           el.style.fontFamily = value;
           break;
         case 'fontSize':
-          el.style.fontSize = value;
+          // Convert execCommand font size (1-7) to actual sizes
+          const sizeMap = { '1': '0.75rem', '2': '0.875rem', '3': '1rem', '4': '1.125rem', '5': '1.25rem', '6': '1.5rem', '7': '2rem' };
+          el.style.fontSize = sizeMap[value] || value;
           break;
         case 'bold':
           el.style.fontWeight = el.style.fontWeight === 'bold' || el.style.fontWeight === '700' ? 'normal' : 'bold';
@@ -104,12 +113,69 @@ const useTextEditor = (containerRef) => {
     fontSize: (fs) => exec('fontSize', fs),
   };
 
+  // Drag functionality
+  const handleMouseDown = useCallback((e) => {
+    if (toolbarRef.current && toolbarRef.current.contains(e.target)) {
+      setIsDragging(true);
+      const rect = toolbarRef.current.getBoundingClientRect();
+      setDragOffset({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      });
+      e.preventDefault();
+    }
+  }, []);
+
+  const handleMouseMove = useCallback((e) => {
+    if (isDragging && toolbarRef.current) {
+      const newX = e.clientX - dragOffset.x;
+      const newY = e.clientY - dragOffset.y;
+      
+      // Keep toolbar within viewport bounds
+      const maxX = window.innerWidth - toolbarRef.current.offsetWidth;
+      const maxY = window.innerHeight - toolbarRef.current.offsetHeight;
+      
+      const clampedX = Math.max(0, Math.min(newX, maxX));
+      const clampedY = Math.max(0, Math.min(newY, maxY));
+      
+      setSelection(prev => ({
+        ...prev,
+        x: clampedX + toolbarRef.current.offsetWidth / 2,
+        y: clampedY + toolbarRef.current.offsetHeight
+      }));
+    }
+  }, [isDragging, dragOffset]);
+
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
+  // Add drag event listeners
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      return () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
+    }
+  }, [isDragging, handleMouseMove, handleMouseUp]);
+
   // Export content
   const exportHTML = () => {
     return containerRef.current ? containerRef.current.innerHTML : '';
   };
 
-  return { selection, toolbarRef, actions, clearSelection, exportHTML };
+  return { 
+    selection, 
+    toolbarRef, 
+    actions, 
+    clearSelection, 
+    exportHTML, 
+    handleMouseDown,
+    isDragging 
+  };
 };
 
 export default useTextEditor; 
