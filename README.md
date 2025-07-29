@@ -2,7 +2,7 @@
 
 A modern, responsive resume builder built with React, TailwindCSS, and Framer Motion. Create professional resumes with multiple templates and export them as PDFs.
 
-## 🚀 Features
+ Features
 
 - **Multiple Templates**: Choose from Modern, Classic, and Creative designs
 - **Real-time Preview**: See changes instantly as you build your resume
@@ -13,7 +13,7 @@ A modern, responsive resume builder built with React, TailwindCSS, and Framer Mo
 - **Responsive Design**: Works perfectly on all devices
 - **Modern UI**: Beautiful glass morphism design with smooth animations
 
-## 🛠️ Tech Stack
+Tech Stack
 
 - **React 18** - Modern React with hooks
 - **Vite** - Fast build tool and dev server
@@ -22,7 +22,7 @@ A modern, responsive resume builder built with React, TailwindCSS, and Framer Mo
 - **html2canvas & jsPDF** - PDF generation
 - **Lucide React** - Beautiful icons
 
-## 📦 Installation
+Installation
 
 1. **Clone the repository**
    ```bash
@@ -43,7 +43,7 @@ A modern, responsive resume builder built with React, TailwindCSS, and Framer Mo
 4. **Open your browser**
    Navigate to `http://localhost:3000`
 
-## 🏗️ Build for Production
+ Build for Production
 
 ```bash
 npm run build
@@ -51,7 +51,7 @@ npm run build
 
 The built files will be in the `dist` directory.
 
-## 📁 Project Structure
+ Project Structure
 
 ```
 src/
@@ -81,7 +81,7 @@ src/
 └── index.css              # Global styles
 ```
 
-## 🎨 Templates
+ Templates
 
 ### Modern Template
 - Clean, minimalist design
@@ -101,7 +101,7 @@ src/
 - Visual elements
 - Great for designers and marketers
 
-## 🎯 Usage
+ Usage
 
 1. **Personal Information**: Fill in your basic details and upload a profile picture
 2. **Experience**: Add your work history with achievements
@@ -112,7 +112,7 @@ src/
 7. **Preview**: Review your resume in real-time
 8. **Export**: Download as PDF when ready
 
-## 🔧 Customization
+Customization
 
 ### Adding New Templates
 1. Create a new template component in `src/components/templates/`
@@ -128,7 +128,7 @@ src/
 - Component-specific styles use TailwindCSS classes
 - Custom animations are defined in `tailwind.config.js`
 
-## 📱 Responsive Design
+ Responsive Design
 
 The application is fully responsive and works on:
 - Desktop computers
@@ -136,7 +136,7 @@ The application is fully responsive and works on:
 - Mobile phones
 - All modern browsers
 
-## 🚀 Deployment
+ Deployment
 
 ### Netlify
 1. Connect your GitHub repository to Netlify
@@ -149,7 +149,7 @@ The application is fully responsive and works on:
 2. Vercel will automatically detect it's a Vite project
 3. Deploy with default settings
 
-## 🤝 Contributing
+ Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -157,18 +157,18 @@ The application is fully responsive and works on:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📄 License
+License
 
 This project is open source and available under the [MIT License](LICENSE).
 
-## 🙏 Acknowledgments
+ Acknowledgments
 
 - [TailwindCSS](https://tailwindcss.com/) for the utility-first CSS framework
 - [Framer Motion](https://www.framer.com/motion/) for smooth animations
 - [Lucide React](https://lucide.dev/) for beautiful icons
 - [Vite](https://vitejs.dev/) for the fast build tool
 
-## 📞 Support
+Support
 
 If you have any questions or need help, please open an issue on GitHub.
 
