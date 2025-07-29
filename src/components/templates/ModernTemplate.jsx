@@ -18,7 +18,7 @@ const ModernTemplate = ({
   const contactInfo = getContactInfo();
 
   return (
-    <div className="font-sans" style={{ color: colors.text }}>
+    <div style={{ color: colors.text }}>
       {/* Header */}
       <div 
         className="p-8 text-white"

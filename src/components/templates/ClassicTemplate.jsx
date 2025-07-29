@@ -1,5 +1,6 @@
 import React from 'react';
 import { Mail, Phone, MapPin, Globe, Linkedin, Github } from 'lucide-react';
+import InlineEditor from '../ui/InlineEditor';
 
 const ClassicTemplate = ({ 
   personal, 
@@ -8,21 +9,31 @@ const ClassicTemplate = ({
   skills, 
   projects, 
   colors, 
+  settings,
   getFullName, 
   getContactInfo, 
-  formatDate 
+  formatDate,
+  onInlineEdit
 }) => {
   const contactInfo = getContactInfo();
 
   return (
-    <div className="font-serif max-w-4xl mx-auto p-8" style={{ color: colors.text }}>
+    <div className="max-w-4xl mx-auto p-8" style={{ color: colors.text }}>
       {/* Header */}
       <header className="text-center mb-8">
         <h1 
           className="text-4xl font-bold mb-4"
           style={{ color: colors.primary }}
         >
-          {getFullName()}
+          <InlineEditor
+            value={getFullName()}
+            onSave={onInlineEdit}
+            field="firstName"
+            section="personal"
+            placeholder="Your Name"
+            className="text-4xl font-bold"
+            style={{ color: colors.primary }}
+          />
         </h1>
         
         {/* Contact Information */}
@@ -44,7 +55,15 @@ const ClassicTemplate = ({
         {personal.summary && (
           <div className="border-t-2 border-b-2 py-4" style={{ borderColor: colors.primary }}>
             <p className="text-lg leading-relaxed max-w-3xl mx-auto">
-              {personal.summary}
+              <InlineEditor
+                value={personal.summary}
+                onSave={onInlineEdit}
+                field="summary"
+                section="personal"
+                placeholder="Professional summary..."
+                className="text-lg leading-relaxed"
+                multiline={true}
+              />
             </p>
           </div>
         )}

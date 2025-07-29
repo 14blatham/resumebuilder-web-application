@@ -112,22 +112,7 @@ const FontSelector = ({ resumeData, updateNestedData }) => {
           </div>
         </div>
 
-        {/* Preview */}
-        <div className="pt-4 border-t border-white/10">
-          <h4 className="text-white font-medium mb-3">Preview</h4>
-          <div 
-            className="p-4 rounded-lg bg-white/5 border border-white/10"
-            style={{ 
-              fontFamily: currentFont,
-              fontSize: fontSizeOptions.find(s => s.value === currentSize)?.size || '1rem'
-            }}
-          >
-            <div className="text-lg font-bold mb-2">Sample Text</div>
-            <div className="text-sm opacity-80">
-              This is how your resume will look with {getFontDisplayName(currentFont)} at {getSizeDisplayName(currentSize)} size.
-            </div>
-          </div>
-        </div>
+
       </CardContent>
     </Card>
   );

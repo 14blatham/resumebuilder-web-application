@@ -1,5 +1,6 @@
 import React from 'react';
 import { Mail, Phone, MapPin, Globe, Linkedin, Github, Calendar, MapPin as LocationIcon } from 'lucide-react';
+import InlineEditor from '../ui/InlineEditor';
 
 const CreativeTemplate = ({ 
   personal, 
@@ -8,14 +9,16 @@ const CreativeTemplate = ({
   skills, 
   projects, 
   colors, 
+  settings,
   getFullName, 
   getContactInfo, 
-  formatDate 
+  formatDate,
+  onInlineEdit
 }) => {
   const contactInfo = getContactInfo();
 
   return (
-    <div className="font-sans flex min-h-screen" style={{ color: colors.text }}>
+    <div className="flex min-h-screen" style={{ color: colors.text }}>
       {/* Sidebar */}
       <div 
         className="w-1/3 p-8 text-white"
@@ -23,10 +26,27 @@ const CreativeTemplate = ({
       >
         {/* Profile Section */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-4">{getFullName()}</h1>
+          <h1 className="text-3xl font-bold mb-4">
+            <InlineEditor
+              value={getFullName()}
+              onSave={onInlineEdit}
+              field="firstName"
+              section="personal"
+              placeholder="Your Name"
+              className="text-3xl font-bold"
+            />
+          </h1>
           {personal.summary && (
             <p className="text-sm leading-relaxed opacity-90">
-              {personal.summary}
+              <InlineEditor
+                value={personal.summary}
+                onSave={onInlineEdit}
+                field="summary"
+                section="personal"
+                placeholder="Professional summary..."
+                className="text-sm leading-relaxed opacity-90"
+                multiline={true}
+              />
             </p>
           )}
         </div>
