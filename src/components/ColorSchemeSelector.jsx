@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Palette, EyeDropper, Check } from 'lucide-react';
+import { Palette, Pipette, Check } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 
 const presetSchemes = [
@@ -201,7 +201,7 @@ const ColorSchemeSelector = ({ data, onUpdate }) => {
             onClick={() => setShowCustomPicker(!showCustomPicker)}
             className="btn-secondary flex items-center space-x-2"
           >
-            <EyeDropper className="w-4 h-4" />
+                            <Pipette className="w-4 h-4" />
             <span>{showCustomPicker ? 'Hide' : 'Show'} Custom Picker</span>
           </button>
         </div>
