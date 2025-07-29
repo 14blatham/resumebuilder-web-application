@@ -163,14 +163,19 @@ const ResumePreview = ({ data, onInlineEdit }) => {
       className="w-full"
     >
       <div 
-        className="w-full bg-white rounded-lg shadow-lg overflow-hidden"
+        className="w-full bg-white rounded-lg shadow-lg overflow-hidden resume-preview"
         style={{ 
           backgroundColor: colors.background,
           color: colors.text,
           fontFamily: settings.fontFamily,
           fontSize: settings.fontSize === 'small' ? '0.875rem' : 
                    settings.fontSize === 'large' ? '1.125rem' : 
-                   settings.fontSize === 'xl' ? '1.25rem' : '1rem'
+                   settings.fontSize === 'xl' ? '1.25rem' : '1rem',
+          // Ensure all child elements inherit the font
+          '--resume-font-family': settings.fontFamily,
+          '--resume-font-size': settings.fontSize === 'small' ? '0.875rem' : 
+                               settings.fontSize === 'large' ? '1.125rem' : 
+                               settings.fontSize === 'xl' ? '1.25rem' : '1rem'
         }}
       >
         {renderTemplate()}

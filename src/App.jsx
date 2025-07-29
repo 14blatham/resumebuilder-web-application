@@ -22,14 +22,29 @@ function App() {
     if (section === 'personal') {
       updateResumeData('personal', { ...resumeData.personal, [field]: value });
     } else if (section === 'experience') {
-      // Handle nested field updates like "0.position"
+      // Handle nested field updates like "0.position" or "0.achievements.1"
       if (field.includes('.')) {
-        const [index, subField] = field.split('.');
+        const parts = field.split('.');
+        const index = parseInt(parts[0]);
         const updatedExperience = [...resumeData.experience];
-        updatedExperience[parseInt(index)] = {
-          ...updatedExperience[parseInt(index)],
-          [subField]: value
-        };
+        
+        if (parts.length === 2) {
+          // Simple nested field like "0.position"
+          updatedExperience[index] = {
+            ...updatedExperience[index],
+            [parts[1]]: value
+          };
+        } else if (parts.length === 3 && parts[1] === 'achievements') {
+          // Achievement field like "0.achievements.1"
+          const achievementIndex = parseInt(parts[2]);
+          updatedExperience[index] = {
+            ...updatedExperience[index],
+            achievements: updatedExperience[index].achievements.map((achievement, idx) => 
+              idx === achievementIndex ? value : achievement
+            )
+          };
+        }
+        
         updateResumeData('experience', updatedExperience);
       } else {
         // Handle direct field updates

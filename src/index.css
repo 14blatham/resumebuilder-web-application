@@ -79,4 +79,50 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.5);
+}
+
+/* Resume Preview Font Inheritance */
+.resume-preview * {
+  font-family: var(--resume-font-family, inherit) !important;
+  font-size: var(--resume-font-size, inherit) !important;
+}
+
+/* Ensure all text elements in resume inherit font settings */
+.resume-preview h1,
+.resume-preview h2,
+.resume-preview h3,
+.resume-preview h4,
+.resume-preview h5,
+.resume-preview h6,
+.resume-preview p,
+.resume-preview span,
+.resume-preview div,
+.resume-preview li,
+.resume-preview ul,
+.resume-preview ol {
+  font-family: var(--resume-font-family, inherit) !important;
+}
+
+/* Scale font sizes proportionally */
+.resume-preview h1 {
+  font-size: calc(var(--resume-font-size, 1rem) * 2.5) !important;
+}
+
+.resume-preview h2 {
+  font-size: calc(var(--resume-font-size, 1rem) * 1.75) !important;
+}
+
+.resume-preview h3 {
+  font-size: calc(var(--resume-font-size, 1rem) * 1.5) !important;
+}
+
+.resume-preview h4 {
+  font-size: calc(var(--resume-font-size, 1rem) * 1.25) !important;
+}
+
+.resume-preview p,
+.resume-preview span,
+.resume-preview div,
+.resume-preview li {
+  font-size: var(--resume-font-size, 1rem) !important;
 } 
