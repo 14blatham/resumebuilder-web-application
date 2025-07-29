@@ -1,5 +1,6 @@
 import React from 'react';
 import { Mail, Phone, MapPin, Globe, Linkedin, Github, Calendar, MapPin as LocationIcon } from 'lucide-react';
+import InlineEditor from '../ui/InlineEditor';
 
 const ModernTemplate = ({ 
   personal, 
@@ -8,9 +9,11 @@ const ModernTemplate = ({
   skills, 
   projects, 
   colors, 
+  settings,
   getFullName, 
   getContactInfo, 
-  formatDate 
+  formatDate,
+  onInlineEdit
 }) => {
   const contactInfo = getContactInfo();
 
@@ -22,10 +25,27 @@ const ModernTemplate = ({
         style={{ backgroundColor: colors.primary }}
       >
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl font-bold mb-2">{getFullName()}</h1>
+          <h1 className="text-4xl font-bold mb-2">
+            <InlineEditor
+              value={getFullName()}
+              onSave={onInlineEdit}
+              field="firstName"
+              section="personal"
+              placeholder="Your Name"
+              className="text-4xl font-bold"
+            />
+          </h1>
           {personal.summary && (
             <p className="text-lg opacity-90 max-w-2xl leading-relaxed">
-              {personal.summary}
+              <InlineEditor
+                value={personal.summary}
+                onSave={onInlineEdit}
+                field="summary"
+                section="personal"
+                placeholder="Professional summary..."
+                className="text-lg opacity-90"
+                multiline={true}
+              />
             </p>
           )}
           
@@ -62,8 +82,26 @@ const ModernTemplate = ({
                 <div key={exp.id || index} className="border-l-4 pl-6" style={{ borderColor: colors.primary }}>
                   <div className="flex justify-between items-start mb-2">
                     <div>
-                      <h3 className="text-xl font-semibold">{exp.position || 'Position'}</h3>
-                      <p className="text-lg font-medium opacity-80">{exp.company || 'Company'}</p>
+                      <h3 className="text-xl font-semibold">
+                        <InlineEditor
+                          value={exp.position}
+                          onSave={onInlineEdit}
+                          field={`${index}.position`}
+                          section="experience"
+                          placeholder="Position"
+                          className="text-xl font-semibold"
+                        />
+                      </h3>
+                      <p className="text-lg font-medium opacity-80">
+                        <InlineEditor
+                          value={exp.company}
+                          onSave={onInlineEdit}
+                          field={`${index}.company`}
+                          section="experience"
+                          placeholder="Company"
+                          className="text-lg font-medium opacity-80"
+                        />
+                      </p>
                     </div>
                     <div className="text-right text-sm opacity-70">
                       <div>{formatDate(exp.startDate)} - {exp.current ? 'Present' : formatDate(exp.endDate)}</div>

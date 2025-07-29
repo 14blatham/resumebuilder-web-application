@@ -71,12 +71,13 @@ const defaultResumeData = {
     background: '#FFFFFF',
     text: '#1F2937'
   },
-  settings: {
-    fontSize: 'medium',
-    spacing: 'normal',
-    showProfilePicture: true,
-    showIcons: true
-  }
+            settings: {
+            fontSize: 'medium',
+            fontFamily: 'Arial, sans-serif',
+            spacing: 'normal',
+            showProfilePicture: true,
+            showIcons: true
+          }
 };
 
 // LocalStorage key

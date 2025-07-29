@@ -8,13 +8,55 @@ import EducationForm from './components/EducationForm';
 import SkillsForm from './components/SkillsForm';
 import TemplateSelector from './components/TemplateSelector';
 import ColorSchemeSelector from './components/ColorSchemeSelector';
+import FontSelector from './components/ui/font';
 import ResumePreview from './components/ResumePreview';
 import PDFExport from './components/PDFExport';
 
 function App() {
-  const { resumeData, updateResumeData } = useResumeData();
+  const { resumeData, updateResumeData, updateNestedData } = useResumeData();
   const [activeTab, setActiveTab] = useState('personal');
   const [isPreviewMode, setIsPreviewMode] = useState(false);
+
+  // Handle inline editing from preview
+  const handleInlineEdit = (field, value, section) => {
+    if (section === 'personal') {
+      updateResumeData('personal', { ...resumeData.personal, [field]: value });
+    } else if (section === 'experience') {
+      // Handle nested field updates like "0.position"
+      if (field.includes('.')) {
+        const [index, subField] = field.split('.');
+        const updatedExperience = [...resumeData.experience];
+        updatedExperience[parseInt(index)] = {
+          ...updatedExperience[parseInt(index)],
+          [subField]: value
+        };
+        updateResumeData('experience', updatedExperience);
+      } else {
+        // Handle direct field updates
+        const updatedExperience = resumeData.experience.map((exp, index) => 
+          index === parseInt(field) ? { ...exp, [field]: value } : exp
+        );
+        updateResumeData('experience', updatedExperience);
+      }
+    } else if (section === 'education') {
+      // Handle nested field updates like "0.institution"
+      if (field.includes('.')) {
+        const [index, subField] = field.split('.');
+        const updatedEducation = [...resumeData.education];
+        updatedEducation[parseInt(index)] = {
+          ...updatedEducation[parseInt(index)],
+          [subField]: value
+        };
+        updateResumeData('education', updatedEducation);
+      } else {
+        // Handle direct field updates
+        const updatedEducation = resumeData.education.map((edu, index) => 
+          index === parseInt(field) ? { ...edu, [field]: value } : edu
+        );
+        updateResumeData('education', updatedEducation);
+      }
+    }
+  };
 
   const tabs = [
     { id: 'personal', label: 'Personal Info', icon: '👤' },
@@ -23,6 +65,7 @@ function App() {
     { id: 'skills', label: 'Skills', icon: '⚡' },
     { id: 'template', label: 'Template', icon: '🎨' },
     { id: 'colors', label: 'Colors', icon: '🎨' },
+    { id: 'fonts', label: 'Fonts', icon: '🔤' },
   ];
 
   const renderTabContent = () => {
@@ -39,6 +82,8 @@ function App() {
         return <TemplateSelector data={resumeData.template} onUpdate={(data) => updateResumeData('template', data)} />;
       case 'colors':
         return <ColorSchemeSelector data={resumeData.colors} onUpdate={(data) => updateResumeData('colors', data)} />;
+      case 'fonts':
+        return <FontSelector resumeData={resumeData} updateNestedData={updateNestedData} />;
       default:
         return <PersonalInfoForm data={resumeData.personal} onUpdate={(data) => updateResumeData('personal', data)} />;
     }
@@ -91,7 +136,7 @@ function App() {
           >
             {/* Tab Navigation */}
             <div className="glass-effect rounded-xl p-2">
-              <div className="grid grid-cols-3 md:grid-cols-6 gap-1">
+              <div className="grid grid-cols-4 md:grid-cols-7 gap-1">
                 {tabs.map((tab) => (
                   <button
                     key={tab.id}
@@ -135,7 +180,7 @@ function App() {
               </div>
               
               <div className="resume-shadow rounded-xl overflow-hidden">
-                <ResumePreview data={resumeData} />
+                <ResumePreview data={resumeData} onInlineEdit={handleInlineEdit} />
               </div>
             </div>
           </motion.div>

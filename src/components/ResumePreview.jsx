@@ -5,7 +5,7 @@ import ModernTemplate from './templates/ModernTemplate';
 import ClassicTemplate from './templates/ClassicTemplate';
 import CreativeTemplate from './templates/CreativeTemplate';
 
-const ResumePreview = ({ data }) => {
+const ResumePreview = ({ data, onInlineEdit }) => {
   const {
     personal = {},
     experience = [],
@@ -19,6 +19,13 @@ const ResumePreview = ({ data }) => {
       accent: '#10B981',
       background: '#FFFFFF',
       text: '#1F2937'
+    },
+    settings = {
+      fontSize: 'medium',
+      fontFamily: 'Arial, sans-serif',
+      spacing: 'normal',
+      showProfilePicture: true,
+      showIcons: true
     }
   } = data || {};
 
@@ -103,9 +110,11 @@ const ResumePreview = ({ data }) => {
       skills,
       projects,
       colors,
+      settings,
       getFullName,
       getContactInfo,
-      formatDate
+      formatDate,
+      onInlineEdit
     };
 
     switch (template.name) {
@@ -157,7 +166,11 @@ const ResumePreview = ({ data }) => {
         className="w-full bg-white rounded-lg shadow-lg overflow-hidden"
         style={{ 
           backgroundColor: colors.background,
-          color: colors.text
+          color: colors.text,
+          fontFamily: settings.fontFamily,
+          fontSize: settings.fontSize === 'small' ? '0.875rem' : 
+                   settings.fontSize === 'large' ? '1.125rem' : 
+                   settings.fontSize === 'xl' ? '1.25rem' : '1rem'
         }}
       >
         {renderTemplate()}
