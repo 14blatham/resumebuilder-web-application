@@ -24,7 +24,7 @@ const TextEditorToolbar = ({ selection, actions, toolbarRef }) => {
     <AnimatePresence>
       <motion.div
         ref={toolbarRef}
-        className="fixed z-50 glass-effect border border-white/20 rounded-lg shadow-lg p-3 flex items-center space-x-3"
+        className="fixed z-50 bg-white/95 backdrop-blur-md border border-gray-300 rounded-lg shadow-xl p-3 flex items-center space-x-3"
         style={{ top: selection.y, left: selection.x, transform: 'translate(-50%, -100%)' }}
         initial={{ opacity: 0, scale: 0.8, y: 10 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -33,7 +33,7 @@ const TextEditorToolbar = ({ selection, actions, toolbarRef }) => {
       >
       {/* Font family */}
       <select
-        className="text-sm px-3 py-2 rounded-lg bg-white/20 backdrop-blur-sm border border-white/30 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200"
+        className="text-sm px-3 py-2 rounded-lg bg-gray-50 border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200"
         defaultValue=""
         onChange={(e) => actions.fontFamily(e.target.value)}
       >
@@ -45,7 +45,7 @@ const TextEditorToolbar = ({ selection, actions, toolbarRef }) => {
 
       {/* Font size */}
       <select
-        className="text-sm px-3 py-2 rounded-lg bg-white/20 backdrop-blur-sm border border-white/30 text-white focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200"
+        className="text-sm px-3 py-2 rounded-lg bg-gray-50 border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200"
         defaultValue=""
         onChange={(e) => actions.fontSize(e.target.value)}
       >
@@ -60,20 +60,20 @@ const TextEditorToolbar = ({ selection, actions, toolbarRef }) => {
         <input 
           type="color" 
           onChange={(e) => actions.color(e.target.value)}
-          className="w-8 h-8 rounded-lg border border-white/30 cursor-pointer"
+          className="w-8 h-8 rounded-lg border border-gray-300 cursor-pointer shadow-sm"
           title="Text Color"
         />
         <input 
           type="color" 
           onChange={(e) => actions.bgColor(e.target.value)}
-          className="w-8 h-8 rounded-lg border border-white/30 cursor-pointer"
+          className="w-8 h-8 rounded-lg border border-gray-300 cursor-pointer shadow-sm"
           title="Background Color"
         />
       </div>
 
       {/* Bold / Italic / Underline */}
       <motion.button 
-        className="p-2 hover:bg-white/20 rounded-lg transition-all duration-200 text-white hover:text-blue-300"
+        className="p-2 hover:bg-gray-100 rounded-lg transition-all duration-200 text-gray-700 hover:text-blue-600"
         onClick={actions.bold}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
@@ -82,7 +82,7 @@ const TextEditorToolbar = ({ selection, actions, toolbarRef }) => {
         <Bold className="w-4 h-4" />
       </motion.button>
       <motion.button 
-        className="p-2 hover:bg-white/20 rounded-lg transition-all duration-200 text-white hover:text-blue-300"
+        className="p-2 hover:bg-gray-100 rounded-lg transition-all duration-200 text-gray-700 hover:text-blue-600"
         onClick={actions.italic}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
@@ -91,7 +91,7 @@ const TextEditorToolbar = ({ selection, actions, toolbarRef }) => {
         <Italic className="w-4 h-4" />
       </motion.button>
       <motion.button 
-        className="p-2 hover:bg-white/20 rounded-lg transition-all duration-200 text-white hover:text-blue-300"
+        className="p-2 hover:bg-gray-100 rounded-lg transition-all duration-200 text-gray-700 hover:text-blue-600"
         onClick={actions.underline}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
@@ -102,7 +102,7 @@ const TextEditorToolbar = ({ selection, actions, toolbarRef }) => {
 
       {/* Undo / Redo */}
       <motion.button 
-        className="p-2 hover:bg-white/20 rounded-lg transition-all duration-200 text-white hover:text-blue-300"
+        className="p-2 hover:bg-gray-100 rounded-lg transition-all duration-200 text-gray-700 hover:text-blue-600"
         onClick={actions.undo}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
@@ -111,7 +111,7 @@ const TextEditorToolbar = ({ selection, actions, toolbarRef }) => {
         <Undo2 className="w-4 h-4" />
       </motion.button>
       <motion.button 
-        className="p-2 hover:bg-white/20 rounded-lg transition-all duration-200 text-white hover:text-blue-300"
+        className="p-2 hover:bg-gray-100 rounded-lg transition-all duration-200 text-gray-700 hover:text-blue-600"
         onClick={actions.redo}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
